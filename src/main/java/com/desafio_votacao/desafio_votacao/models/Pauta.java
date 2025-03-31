@@ -1,22 +1,24 @@
 package com.desafio_votacao.desafio_votacao.models;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
+@Table(name = "pautas")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Pauta {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    private String descricao;
+    @Column(nullable = false)
+    private String titulo;
     
-    // Relacionamento opcional com a Sessão de votação
-    @OneToOne(mappedBy = "pauta", cascade = CascadeType.ALL)
-    private Sessao sessao;
+    @Column(columnDefinition = "TEXT")
+    private String descricao;
 }
-

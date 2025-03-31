@@ -1,30 +1,31 @@
 package com.desafio_votacao.desafio_votacao.models;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+
 @Entity
-@Table(name = "votos",
-       uniqueConstraints = {@UniqueConstraint(columnNames = {"associado_id", "pauta_id"})})
+@Table(name = "sessoes_votacao")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Voto {
+public class SessaoVotacao {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "associado_id", nullable = false)
-    private Associado associado;
-
-    @ManyToOne
     @JoinColumn(name = "pauta_id", nullable = false)
     private Pauta pauta;
 
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime inicio = LocalDateTime.now();
+    
     @Column(nullable = false)
-    private Boolean voto; // true = Sim, false = Não
+    private LocalDateTime fim;
 }
