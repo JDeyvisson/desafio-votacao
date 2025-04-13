@@ -2,21 +2,35 @@ package com.desafio_votacao.desafio_votacao.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import com.desafio_votacao.desafio_votacao.models.SessaoVotacao;
 import com.desafio_votacao.desafio_votacao.models.Voto;
+import com.desafio_votacao.desafio_votacao.repositories.SessaoVotacaoRepository;
 import com.desafio_votacao.desafio_votacao.repositories.VotoRepository;
+import java.time.LocalDateTime;
 import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
 public class VotoService {
 
     private final VotoRepository votoRepository;
-    private final SessaoVotacaoService sessaoVotacaoService;
+    private final SessaoVotacaoRepository sessaoVotacaoRepository;
 
     public Voto registrarVoto(Voto voto) {
+     
         if (votoRepository.existsByAssociadoIdAndPautaId(voto.getAssociado().getId(), voto.getPauta().getId())) {
             throw new RuntimeException("Associado já votou nesta pauta");
         }
+
+        SessaoVotacao sessao = sessaoVotacaoRepository.findByPautaId(voto.getPauta().getId())
+                .orElseThrow(() -> new RuntimeException("Sessão de votação não encontrada para a pauta"));
+
+        LocalDateTime agora = LocalDateTime.now();
+        if (agora.isBefore(sessao.getInicio()) || agora.isAfter(sessao.getFim())) {
+            throw new RuntimeException("Sessão de votação está encerrada ou ainda não começou");
+        }
+
         return votoRepository.save(voto);
     }
 

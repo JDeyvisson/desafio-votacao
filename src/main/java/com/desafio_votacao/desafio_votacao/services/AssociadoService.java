@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.desafio_votacao.desafio_votacao.models.Associado;
 import com.desafio_votacao.desafio_votacao.repositories.AssociadoRepository;
-
 import java.util.List;
 
 @Service

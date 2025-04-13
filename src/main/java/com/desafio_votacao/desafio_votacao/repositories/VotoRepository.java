@@ -3,7 +3,6 @@ package com.desafio_votacao.desafio_votacao.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import com.desafio_votacao.desafio_votacao.models.Voto;
-
 import java.util.List;
 
 @Repository

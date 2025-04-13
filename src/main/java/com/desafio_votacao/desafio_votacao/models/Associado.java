@@ -1,6 +1,5 @@
 package com.desafio_votacao.desafio_votacao.models;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 

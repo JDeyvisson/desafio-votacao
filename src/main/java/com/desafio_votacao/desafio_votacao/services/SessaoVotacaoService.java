@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import com.desafio_votacao.desafio_votacao.models.Pauta;
 import com.desafio_votacao.desafio_votacao.models.SessaoVotacao;
 import com.desafio_votacao.desafio_votacao.repositories.SessaoVotacaoRepository;
-
 import java.time.LocalDateTime;
 
 @Service

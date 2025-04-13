@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.desafio_votacao.desafio_votacao.models.Pauta;
 import com.desafio_votacao.desafio_votacao.services.PautaService;
-
 import java.util.List;
 
 @RestController

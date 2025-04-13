@@ -2,10 +2,7 @@ package com.desafio_votacao.desafio_votacao.models;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDateTime;
-
-import io.swagger.v3.oas.annotations.media.Schema;
 
 @Entity
 @Table(name = "sessoes_votacao")

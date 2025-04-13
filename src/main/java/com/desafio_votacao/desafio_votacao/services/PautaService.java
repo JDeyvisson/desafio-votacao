@@ -4,10 +4,8 @@ package com.desafio_votacao.desafio_votacao.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import com.desafio_votacao.desafio_votacao.models.Pauta;
 import com.desafio_votacao.desafio_votacao.repositories.PautaRepository;
-
 import java.util.List;
 
 @Service
