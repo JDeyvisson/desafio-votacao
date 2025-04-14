@@ -3,7 +3,6 @@ package com.desafio_votacao.desafio_votacao.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.desafio_votacao.desafio_votacao.models.Pauta;
@@ -12,10 +11,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/pautas")
-@RequiredArgsConstructor
 public class PautaController {
 
     private final PautaService pautaService;
+
+    public PautaController(PautaService pautaService) {
+        this.pautaService = pautaService;
+    }
 
     @GetMapping
     @Operation(summary = "Listar todas as pautas", description = "Retorna uma lista de todas as pautas disponíveis")

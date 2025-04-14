@@ -4,17 +4,19 @@ import com.desafio_votacao.desafio_votacao.models.Associado;
 import com.desafio_votacao.desafio_votacao.services.AssociadoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
 @RequestMapping("/associados")
-@RequiredArgsConstructor
 public class AssociadoController {
 
     private final AssociadoService associadoService;
+
+    public AssociadoController(AssociadoService associadoService) {
+        this.associadoService = associadoService;
+    }
 
     @GetMapping
     @Operation(summary = "Listar todos os associados", description = "Retorna a lista de associados cadastrados")

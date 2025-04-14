@@ -1,6 +1,5 @@
 package com.desafio_votacao.desafio_votacao.services;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.desafio_votacao.desafio_votacao.models.SessaoVotacao;
 import com.desafio_votacao.desafio_votacao.models.Voto;
@@ -11,14 +10,18 @@ import java.util.List;
 
 
 @Service
-@RequiredArgsConstructor
 public class VotoService {
 
     private final VotoRepository votoRepository;
     private final SessaoVotacaoRepository sessaoVotacaoRepository;
 
+    public VotoService(VotoRepository votoRepository, SessaoVotacaoRepository sessaoVotacaoRepository) {
+        this.votoRepository = votoRepository;
+        this.sessaoVotacaoRepository = sessaoVotacaoRepository;
+    }
+
     public Voto registrarVoto(Voto voto) {
-     
+
         if (votoRepository.existsByAssociadoIdAndPautaId(voto.getAssociado().getId(), voto.getPauta().getId())) {
             throw new RuntimeException("Associado já votou nesta pauta");
         }
@@ -41,4 +44,3 @@ public class VotoService {
         return "Sim: " + sim + ", Não: " + nao;
     }
 }
-

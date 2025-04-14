@@ -5,16 +5,18 @@ import com.desafio_votacao.desafio_votacao.models.SessaoVotacao;
 import com.desafio_votacao.desafio_votacao.services.SessaoVotacaoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/sessoes")
-@RequiredArgsConstructor
 public class SessaoVotacaoController {
 
     private final SessaoVotacaoService sessaoVotacaoService;
+
+    public SessaoVotacaoController(SessaoVotacaoService sessaoVotacaoService) {
+        this.sessaoVotacaoService = sessaoVotacaoService;
+    }
 
     @PostMapping("/{pautaId}")
     @Operation(summary = "Abrir uma sessão de votação", description = "Abre uma nova sessão de votação para uma pauta")

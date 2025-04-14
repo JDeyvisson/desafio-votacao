@@ -1,18 +1,18 @@
 package com.desafio_votacao.desafio_votacao.services;
 
-
-
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.desafio_votacao.desafio_votacao.models.Pauta;
 import com.desafio_votacao.desafio_votacao.repositories.PautaRepository;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class PautaService {
     
     private final PautaRepository pautaRepository;
+
+    public PautaService(PautaRepository pautaRepository) {
+        this.pautaRepository = pautaRepository;
+    }
 
     public List<Pauta> listarPautas() {
         return pautaRepository.findAll();

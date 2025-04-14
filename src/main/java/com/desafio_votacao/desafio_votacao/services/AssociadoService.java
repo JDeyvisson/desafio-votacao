@@ -1,17 +1,18 @@
 package com.desafio_votacao.desafio_votacao.services;
 
-
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.desafio_votacao.desafio_votacao.models.Associado;
 import com.desafio_votacao.desafio_votacao.repositories.AssociadoRepository;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class AssociadoService {
 
     private final AssociadoRepository associadoRepository;
+
+    public AssociadoService(AssociadoRepository associadoRepository) {
+        this.associadoRepository = associadoRepository;
+    }
 
     public List<Associado> listarTodos() {
         return associadoRepository.findAll();

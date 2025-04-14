@@ -2,7 +2,6 @@ package com.desafio_votacao.desafio_votacao.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.desafio_votacao.desafio_votacao.models.Voto;
@@ -10,10 +9,13 @@ import com.desafio_votacao.desafio_votacao.services.VotoService;
 
 @RestController
 @RequestMapping("/votos")
-@RequiredArgsConstructor
 public class VotoController {
 
     private final VotoService votoService;
+
+    public VotoController(VotoService votoService) {
+        this.votoService = votoService;
+    }
 
     @PostMapping
     @Operation(summary = "Registrar um voto", description = "Registra um voto para uma pauta.")
