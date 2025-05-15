@@ -1,11 +1,11 @@
 package com.desafio_votacao.desafio_votacao.controllers;
 
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.desafio_votacao.desafio_votacao.models.Pauta;
+import com.desafio_votacao.desafio_votacao.dto.request.PautaRequest;
+import com.desafio_votacao.desafio_votacao.dto.response.PautaResponse;
 import com.desafio_votacao.desafio_votacao.services.PautaService;
 import java.util.List;
 
@@ -20,16 +20,16 @@ public class PautaController {
     }
 
     @GetMapping
-    @Operation(summary = "Listar todas as pautas", description = "Retorna uma lista de todas as pautas disponíveis")
+    @Operation(summary = "Listar todas as pautas")
     @ApiResponse(responseCode = "200", description = "Lista de pautas retornada com sucesso")
-    public ResponseEntity<List<Pauta>> listarPautas() {
+    public ResponseEntity<List<PautaResponse>> listarPautas() {
         return ResponseEntity.ok(pautaService.listarPautas());
     }
 
     @PostMapping
-    @Operation(summary = "Criar uma nova pauta", description = "Cria uma pauta com título e descrição")
+    @Operation(summary = "Criar nova pauta")
     @ApiResponse(responseCode = "201", description = "Pauta criada com sucesso")
-    public ResponseEntity<Pauta> criarPauta(@RequestBody Pauta pauta) {
-        return ResponseEntity.ok(pautaService.criarPauta(pauta));
+    public ResponseEntity<PautaResponse> criarPauta(@RequestBody PautaRequest request) {
+        return ResponseEntity.ok(pautaService.criarPauta(request));
     }
 }

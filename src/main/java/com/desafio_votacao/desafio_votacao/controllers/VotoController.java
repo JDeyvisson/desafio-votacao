@@ -4,7 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.desafio_votacao.desafio_votacao.models.Voto;
+import com.desafio_votacao.desafio_votacao.dto.request.VotoRequest;
+import com.desafio_votacao.desafio_votacao.dto.response.VotoResponse;
 import com.desafio_votacao.desafio_votacao.services.VotoService;
 
 @RestController
@@ -18,15 +19,15 @@ public class VotoController {
     }
 
     @PostMapping
-    @Operation(summary = "Registrar um voto", description = "Registra um voto para uma pauta.")
-    @ApiResponse(responseCode = "200", description = "Voto registrado com sucesso")
-    public ResponseEntity<Voto> votar(@RequestBody Voto voto) {
-        return ResponseEntity.ok(votoService.registrarVoto(voto));
+    @Operation(summary = "Registrar voto")
+    @ApiResponse(responseCode = "201", description = "Voto registrado com sucesso")
+    public ResponseEntity<VotoResponse> votar(@RequestBody VotoRequest request) {
+        return ResponseEntity.ok(votoService.registrarVoto(request));
     }
 
-    @GetMapping("/{pautaId}/resultado")
-    @Operation(summary = "Consultar resultado dos votos", description = "Retorna o resultado da votação de uma pauta específica.")
-    @ApiResponse(responseCode = "200", description = "Resultado retornado com sucesso")
+    @GetMapping("/resultado/{pautaId}")
+    @Operation(summary = "Consultar resultado da votação")
+    @ApiResponse(responseCode = "200", description = "Resultado da votação retornado com sucesso")
     public ResponseEntity<String> resultado(@PathVariable Long pautaId) {
         return ResponseEntity.ok(votoService.contarVotos(pautaId));
     }

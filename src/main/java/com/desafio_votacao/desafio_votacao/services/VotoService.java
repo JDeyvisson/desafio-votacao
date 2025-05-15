@@ -1,46 +1,47 @@
 package com.desafio_votacao.desafio_votacao.services;
 
 import org.springframework.stereotype.Service;
-import com.desafio_votacao.desafio_votacao.models.SessaoVotacao;
 import com.desafio_votacao.desafio_votacao.models.Voto;
-import com.desafio_votacao.desafio_votacao.repositories.SessaoVotacaoRepository;
 import com.desafio_votacao.desafio_votacao.repositories.VotoRepository;
-import java.time.LocalDateTime;
+import com.desafio_votacao.desafio_votacao.dto.request.VotoRequest;
+import com.desafio_votacao.desafio_votacao.dto.response.VotoResponse;
 import java.util.List;
-
 
 @Service
 public class VotoService {
 
     private final VotoRepository votoRepository;
-    private final SessaoVotacaoRepository sessaoVotacaoRepository;
+    private final AssociadoService associadoService;
+    private final PautaService pautaService;
 
-    public VotoService(VotoRepository votoRepository, SessaoVotacaoRepository sessaoVotacaoRepository) {
+    public VotoService(VotoRepository votoRepository, AssociadoService associadoService, PautaService pautaService) {
         this.votoRepository = votoRepository;
-        this.sessaoVotacaoRepository = sessaoVotacaoRepository;
+        this.associadoService = associadoService;
+        this.pautaService = pautaService;
     }
 
-    public Voto registrarVoto(Voto voto) {
-
-        if (votoRepository.existsByAssociadoIdAndPautaId(voto.getAssociado().getId(), voto.getPauta().getId())) {
-            throw new RuntimeException("Associado já votou nesta pauta");
-        }
-
-        SessaoVotacao sessao = sessaoVotacaoRepository.findByPautaId(voto.getPauta().getId())
-                .orElseThrow(() -> new RuntimeException("Sessão de votação não encontrada para a pauta"));
-
-        LocalDateTime agora = LocalDateTime.now();
-        if (agora.isBefore(sessao.getInicio()) || agora.isAfter(sessao.getFim())) {
-            throw new RuntimeException("Sessão de votação está encerrada ou ainda não começou");
-        }
-
-        return votoRepository.save(voto);
+    public VotoResponse registrarVoto(VotoRequest request) {
+        Voto voto = Voto.builder()
+                .associado(associadoService.buscarPorId(request.getAssociadoId()))
+                .pauta(pautaService.buscarPorId(request.getPautaId()))
+                .voto(request.getVoto())
+                .build();
+        return toResponse(votoRepository.save(voto));
     }
 
     public String contarVotos(Long pautaId) {
         List<Voto> votos = votoRepository.findByPautaId(pautaId);
-        long sim = votos.stream().filter(Voto::getVoto).count();
-        long nao = votos.size() - sim;
-        return "Sim: " + sim + ", Não: " + nao;
+        long votosSim = votos.stream().filter(v -> v.getVoto()).count();
+        long votosNao = votos.size() - votosSim;
+        return String.format("Resultado da votação: %d votos SIM, %d votos NÃO", votosSim, votosNao);
+    }
+
+    private VotoResponse toResponse(Voto voto) {
+        return VotoResponse.builder()
+            .id(voto.getId())
+            .associadoId(voto.getAssociado().getId())
+            .pautaId(voto.getPauta().getId())
+            .voto(voto.getVoto())
+            .build();
     }
 }
