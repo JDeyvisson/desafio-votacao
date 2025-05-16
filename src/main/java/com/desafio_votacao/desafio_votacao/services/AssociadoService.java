@@ -27,17 +27,29 @@ public class AssociadoService {
         return associadoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Associado não encontrado"));
     }
+    
+    public Associado buscarPorEmail(String email) {
+        return associadoRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Associado não encontrado"));
+    }
 
     public AssociadoResponse cadastrarAssociado(AssociadoRequest request) {
+        if (associadoRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new RuntimeException("Email já cadastrado");
+        }
+        
         Associado associado = new Associado();
         associado.setNome(request.getNome());
+        associado.setEmail(request.getEmail());
+        associado.setSenha(request.getSenha()); // In a real application, this should be encrypted
         return toResponse(associadoRepository.save(associado));
     }
 
-    private AssociadoResponse toResponse(Associado associado) {
+    public AssociadoResponse toResponse(Associado associado) {
         return AssociadoResponse.builder()
             .id(associado.getId())
             .nome(associado.getNome())
+            .email(associado.getEmail())
             .build();
     }
 }

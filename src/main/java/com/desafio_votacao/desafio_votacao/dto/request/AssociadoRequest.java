@@ -11,4 +11,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public class AssociadoRequest {
     @Schema(description = "Nome do associado", example = "João Silva", required = true)
     private String nome;
+    
+    @Schema(description = "Email do associado", example = "joao.silva@email.com", required = true)
+    private String email;
+    
+    @Schema(description = "Senha do associado", example = "senha123", required = true)
+    private String senha;
 } 

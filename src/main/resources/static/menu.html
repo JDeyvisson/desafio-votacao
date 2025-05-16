@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Votação - Menu</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Sistema de Votação</h1>
+        <p id="welcomeMessage"></p>
+        <button class="logout-btn" onclick="logout()">Sair</button>
+    </div>
+    
+    <div class="container">
+        <div class="menu-container">
+            <div class="menu-item">
+                <h3>Criar Pauta</h3>
+                <p>Crie uma nova pauta para votação</p>
+                <form id="pautaForm">
+                    <div class="form-group">
+                        <label for="titulo">Título:</label>
+                        <input type="text" id="titulo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="descricao">Descrição:</label>
+                        <input type="text" id="descricao" required>
+                    </div>
+                    <button type="submit">Criar Pauta</button>
+                </form>
+            </div>
+
+            <div class="menu-item">
+                <h3>Iniciar Sessão</h3>
+                <p>Inicie uma sessão de votação para uma pauta</p>
+                <form id="sessaoForm">
+                    <div class="form-group">
+                        <label for="pautaId">ID da Pauta:</label>
+                        <input type="number" id="pautaId" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="minutos">Duração (minutos):</label>
+                        <input type="number" id="minutos" min="1" value="1">
+                    </div>
+                    <button type="submit">Iniciar Sessão</button>
+                </form>
+            </div>
+
+            <div class="menu-item">
+                <h3>Votar</h3>
+                <p>Registre seu voto em uma pauta</p>
+                <form id="votoForm">
+                    <div class="form-group">
+                        <label for="votoPautaId">ID da Pauta:</label>
+                        <input type="number" id="votoPautaId" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Voto:</label>
+                        <div style="display: flex; gap: 10px;">
+                            <button type="button" onclick="setVoto(true)" style="background-color: #28a745;">Sim</button>
+                            <button type="button" onclick="setVoto(false)" style="background-color: #dc3545;">Não</button>
+                        </div>
+                    </div>
+                    <button type="submit" id="submitVoto" disabled>Registrar Voto</button>
+                </form>
+            </div>
+
+            <div class="menu-item">
+                <h3>Resultados</h3>
+                <p>Consulte o resultado de uma votação</p>
+                <form id="resultadoForm">
+                    <div class="form-group">
+                        <label for="resultadoPautaId">ID da Pauta:</label>
+                        <input type="number" id="resultadoPautaId" required>
+                    </div>
+                    <button type="submit">Consultar Resultado</button>
+                </form>
+                <div id="resultado" style="margin-top: 15px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Verificar se está logado
+        const associadoId = localStorage.getItem('associadoId');
+        const associadoNome = localStorage.getItem('associadoNome');
+        
+        if (!associadoId) {
+            window.location.href = 'index.html';
+        }
+        
+        document.getElementById('welcomeMessage').textContent = `Bem-vindo, ${associadoNome}!`;
+        
+        function logout() {
+            localStorage.removeItem('associadoId');
+            localStorage.removeItem('associadoNome');
+            window.location.href = 'index.html';
+        }
+
+        // Criar Pauta
+        document.getElementById('pautaForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const titulo = document.getElementById('titulo').value;
+            const descricao = document.getElementById('descricao').value;
+            
+            try {
+                const response = await fetch('/pautas', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ titulo, descricao })
+                });
+                
+                if (response.ok) {
+                    alert('Pauta criada com sucesso!');
+                    e.target.reset();
+                } else {
+                    alert('Erro ao criar pauta');
+                }
+            } catch (error) {
+                alert('Erro ao criar pauta');
+            }
+        });
+
+        // Iniciar Sessão
+        document.getElementById('sessaoForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const pautaId = document.getElementById('pautaId').value;
+            const minutos = document.getElementById('minutos').value;
+            
+            try {
+                const response = await fetch(`/sessoes/${pautaId}?minutos=${minutos}`, {
+                    method: 'POST'
+                });
+                
+                if (response.ok) {
+                    alert('Sessão iniciada com sucesso!');
+                    e.target.reset();
+                } else {
+                    alert('Erro ao iniciar sessão');
+                }
+            } catch (error) {
+                alert('Erro ao iniciar sessão');
+            }
+        });
+
+        // Votar
+        let votoSelecionado = null;
+        
+        function setVoto(valor) {
+            votoSelecionado = valor;
+            document.getElementById('submitVoto').disabled = false;
+        }
+        
+        document.getElementById('votoForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (votoSelecionado === null) {
+                alert('Selecione um voto (Sim ou Não)');
+                return;
+            }
+            
+            const pautaId = document.getElementById('votoPautaId').value;
+            
+            try {
+                const response = await fetch('/votos', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        associadoId: parseInt(associadoId),
+                        pautaId: parseInt(pautaId),
+                        voto: votoSelecionado
+                    })
+                });
+                
+                if (response.ok) {
+                    alert('Voto registrado com sucesso!');
+                    e.target.reset();
+                    votoSelecionado = null;
+                    document.getElementById('submitVoto').disabled = true;
+                } else {
+                    alert('Erro ao registrar voto');
+                }
+            } catch (error) {
+                alert('Erro ao registrar voto');
+            }
+        });
+
+        // Consultar Resultado
+        document.getElementById('resultadoForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const pautaId = document.getElementById('resultadoPautaId').value;
+            
+            try {
+                const response = await fetch(`/votos/resultado/${pautaId}`);
+                
+                if (response.ok) {
+                    const resultado = await response.text();
+                    document.getElementById('resultado').textContent = resultado;
+                } else {
+                    alert('Erro ao consultar resultado');
+                }
+            } catch (error) {
+                alert('Erro ao consultar resultado');
+            }
+        });
+    </script>
+</body>
+</html> 

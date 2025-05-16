@@ -14,4 +14,7 @@ public class AssociadoResponse {
     
     @Schema(description = "Nome do associado", example = "João Silva")
     private String nome;
+    
+    @Schema(description = "Email do associado", example = "joao.silva@email.com")
+    private String email;
 } 

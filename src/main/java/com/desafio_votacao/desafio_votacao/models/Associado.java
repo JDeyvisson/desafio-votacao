@@ -17,4 +17,10 @@ public class Associado {
     
     @Column(nullable = false)
     private String nome;
+    
+    @Column(nullable = false, unique = true)
+    private String email;
+    
+    @Column(nullable = false)
+    private String senha;
 }

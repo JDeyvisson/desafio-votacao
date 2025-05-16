@@ -32,5 +32,16 @@ public class AssociadoController {
     public ResponseEntity<AssociadoResponse> cadastrarAssociado(@RequestBody AssociadoRequest request) {
         return ResponseEntity.ok(associadoService.cadastrarAssociado(request));
     }
+    
+    @PostMapping("/login")
+    @Operation(summary = "Realizar login do associado")
+    @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
+    public ResponseEntity<AssociadoResponse> login(@RequestBody AssociadoRequest request) {
+        var associado = associadoService.buscarPorEmail(request.getEmail());
+        if (!associado.getSenha().equals(request.getSenha())) {
+            throw new RuntimeException("Senha incorreta");
+        }
+        return ResponseEntity.ok(associadoService.toResponse(associado));
+    }
 }
 
