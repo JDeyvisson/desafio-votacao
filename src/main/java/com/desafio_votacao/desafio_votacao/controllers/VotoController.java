@@ -31,4 +31,13 @@ public class VotoController {
     public ResponseEntity<String> resultado(@PathVariable Long pautaId) {
         return ResponseEntity.ok(votoService.contarVotos(pautaId));
     }
+
+    @GetMapping("/pode-votar/{pautaId}")
+    @Operation(summary = "Verificar se o associado pode votar na pauta")
+    @ApiResponse(responseCode = "200", description = "Status de votação retornado com sucesso")
+    public ResponseEntity<Boolean> podeVotar(
+            @PathVariable Long pautaId,
+            @RequestParam Long associadoId) {
+        return ResponseEntity.ok(votoService.podeVotar(associadoId, pautaId));
+    }
 }

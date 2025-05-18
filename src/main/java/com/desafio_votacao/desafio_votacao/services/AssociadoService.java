@@ -27,7 +27,7 @@ public class AssociadoService {
         return associadoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Associado não encontrado"));
     }
-    
+
     public Associado buscarPorEmail(String email) {
         return associadoRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Associado não encontrado"));

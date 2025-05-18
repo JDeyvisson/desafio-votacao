@@ -32,4 +32,12 @@ public class PautaController {
     public ResponseEntity<PautaResponse> criarPauta(@RequestBody PautaRequest request) {
         return ResponseEntity.ok(pautaService.criarPauta(request));
     }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Excluir pauta")
+    @ApiResponse(responseCode = "204", description = "Pauta excluída com sucesso")
+    public ResponseEntity<Void> excluirPauta(@PathVariable Long id) {
+        pautaService.excluirPauta(id);
+        return ResponseEntity.noContent().build();
+    }
 }

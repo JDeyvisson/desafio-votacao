@@ -34,6 +34,13 @@ public class PautaService {
         return pautaRepository.findById(id).orElseThrow(() -> new RuntimeException("Pauta não encontrada"));
     }
 
+    public void excluirPauta(Long id) {
+        if (!pautaRepository.existsById(id)) {
+            throw new RuntimeException("Pauta não encontrada");
+        }
+        pautaRepository.deleteById(id);
+    }
+
     private PautaResponse toResponse(Pauta pauta) {
         return PautaResponse.builder()
             .id(pauta.getId())
