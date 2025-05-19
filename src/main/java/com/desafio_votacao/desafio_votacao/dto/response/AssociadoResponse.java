@@ -17,4 +17,7 @@ public class AssociadoResponse {
     
     @Schema(description = "Email do associado", example = "joao.silva@email.com")
     private String email;
+
+    @Schema(description = "CPF do associado", example = "123.456.789-00")
+    private String cpf;
 } 

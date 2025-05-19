@@ -28,12 +28,12 @@
                     </tr>
                 </thead>
                 <tbody id="pautasList">
-                    <!-- Lista de pautas será preenchida dinamicamente -->
+                   
                 </tbody>
             </table>
         </div>
 
-        <!-- Modal para criar pauta -->
+       
         <div id="createPautaModal" class="modal">
             <div class="modal-content compact-modal">
                 <div class="modal-header">
@@ -57,7 +57,7 @@
             </div>
         </div>
 
-        <!-- Modal para votar -->
+       
         <div id="votarModal" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeVotarModal()">&times;</span>
@@ -101,7 +101,7 @@
     </div>
 
     <script>
-        // Verificar se está logado
+        
         const associadoId = localStorage.getItem('associadoId');
         const associadoNome = localStorage.getItem('associadoNome');
         
@@ -117,7 +117,7 @@
             window.location.href = 'index.html';
         }
 
-        // Função para carregar as pautas
+        
         async function carregarPautas() {
             try {
                 const response = await fetch('/pautas');
@@ -159,7 +159,7 @@
             }
         }
 
-        // Função para verificar se pode votar
+       
         async function verificarStatusVoto(pautaId) {
             try {
                 const response = await fetch(`/votos/pode-votar/${pautaId}?associadoId=${associadoId}`);
@@ -180,10 +180,10 @@
             }
         }
 
-        // Carregar pautas ao iniciar a página
+        
         carregarPautas();
 
-        // Modal de criar pauta
+        
         function showCreatePautaModal() {
             document.getElementById('createPautaModal').style.display = 'block';
         }
@@ -192,7 +192,7 @@
             document.getElementById('createPautaModal').style.display = 'none';
         }
 
-        // Criar Pauta
+       
         document.getElementById('pautaForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -221,7 +221,7 @@
             }
         });
 
-        // Iniciar Sessão
+        
         async function iniciarSessao(pautaId) {
             const minutos = prompt('Digite a duração da sessão em minutos:', '1');
             if (minutos === null) return;
@@ -242,7 +242,7 @@
             }
         }
 
-        // Modal de votar
+        
         let pautaAtualId = null;
         let votoSelecionado = null;
 
@@ -281,7 +281,7 @@
             document.getElementById('submitVoto').disabled = false;
         }
 
-        // Registrar voto
+        
         document.getElementById('submitVoto').addEventListener('click', async () => {
             if (votoSelecionado === null) {
                 alert('Selecione um voto (Sim ou Não)');
@@ -312,14 +312,14 @@
             }
         });
 
-        // Função para mostrar resultado
+        
         async function mostrarResultado(pautaId, pautaTitulo) {
             try {
                 const response = await fetch(`/votos/resultado/${pautaId}`);
                 if (response.ok) {
                     const resultadoTexto = await response.text();
                     
-                    // Extrair os números do texto usando regex
+                    
                     const match = resultadoTexto.match(/Resultado da votação: (\d+) votos SIM, (\d+) votos NÃO/);
                     if (match) {
                         const votosSim = parseInt(match[1]);
@@ -348,7 +348,7 @@
             document.getElementById('resultadoModal').style.display = 'none';
         }
 
-        // Atualizar o evento de clique fora do modal
+        
         window.onclick = function(event) {
             const createModal = document.getElementById('createPautaModal');
             const votarModal = document.getElementById('votarModal');
@@ -365,7 +365,6 @@
             }
         }
 
-        // Função para excluir pauta
         async function excluirPauta(pautaId) {
             if (!confirm('Tem certeza que deseja excluir esta pauta?')) {
                 return;

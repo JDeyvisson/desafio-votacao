@@ -17,4 +17,7 @@ public class AssociadoRequest {
     
     @Schema(description = "Senha do associado", example = "senha123", required = true)
     private String senha;
+
+    @Schema(description = "CPF do associado", example = "123.456.789-00", required = true)
+    private String cpf;
 } 

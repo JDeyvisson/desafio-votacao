@@ -41,7 +41,8 @@ public class AssociadoService {
         Associado associado = new Associado();
         associado.setNome(request.getNome());
         associado.setEmail(request.getEmail());
-        associado.setSenha(request.getSenha()); // In a real application, this should be encrypted
+        associado.setSenha(request.getSenha()); 
+        associado.setCpf(request.getCpf());
         return toResponse(associadoRepository.save(associado));
     }
 
@@ -50,6 +51,7 @@ public class AssociadoService {
             .id(associado.getId())
             .nome(associado.getNome())
             .email(associado.getEmail())
+            .cpf(associado.getCpf())
             .build();
     }
 }

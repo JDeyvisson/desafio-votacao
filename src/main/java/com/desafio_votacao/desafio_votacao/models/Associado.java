@@ -23,4 +23,7 @@ public class Associado {
     
     @Column(nullable = false)
     private String senha;
+
+    @Column(nullable = false, unique = true)
+    private String cpf;
 }

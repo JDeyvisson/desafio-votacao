@@ -43,18 +43,18 @@ public class VotoService {
     }
 
     public boolean podeVotar(Long associadoId, Long pautaId) {
-        // Verifica se já votou
+     
         if (votoRepository.existsByAssociadoIdAndPautaId(associadoId, pautaId)) {
             return false;
         }
 
-        // Verifica se existe sessão ativa
+        
         Optional<SessaoVotacao> sessao = sessaoVotacaoRepository.findByPautaId(pautaId);
         if (sessao.isEmpty()) {
             return false;
         }
 
-        // Verifica se a sessão ainda está ativa
+    
         return sessao.get().getFim().isAfter(LocalDateTime.now());
     }
 
